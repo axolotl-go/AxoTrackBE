@@ -1,0 +1,41 @@
+# Environment files
+.env*
+!.env.example
+
+# Database files
+*.db
+
+# Go binaries and executables
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.bin
+/main
+/main.exe
+
+# Build output directories
+build/
+bin/
+dist/
+
+# Go coverage reports
+coverage.out
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.swp
+*.swo
+
+# IDE/editor configs
+.vscode/
+.idea/
+
+# Vendor directory (if not using `go mod vendor`)
+vendor/
