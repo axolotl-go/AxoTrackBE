@@ -23,7 +23,7 @@ func main() {
 	DB_HOST := os.Getenv("DB_HOST")
 
 	db.Dbconnection()
-	db.DB.AutoMigrate(models.SignUp{})
+	db.DB.AutoMigrate(models.User{})
 	db.DB.AutoMigrate(models.SignIn{})
 	db.DB.AutoMigrate(models.Transaction{})
 
@@ -40,6 +40,7 @@ func main() {
 
 	// Transactions route
 	app.Post("/transaction", routes.Transaction)
+	app.Post("/viewTransaction", routes.ViewTransaction)
 
 	app.Listen(":" + DB_HOST)
 }

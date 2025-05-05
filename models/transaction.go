@@ -1,14 +1,17 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"time"
+
+	"gorm.io/gorm"
+)
 
 type Transaction struct {
 	gorm.Model
-
-	TransactionType string  `json:"transactionType" gorm:"type:varchar(20);not null"`
-	Amount          float64 `json:"amount" gorm:"type:decimal(10,2);not null"`
-	Description     string  `json:"description" gorm:"type:varchar(255);not null"`
-	Category        string  `json:"category" gorm:"type:varchar(50);not null"`
-	Date            string  `json:"date" gorm:"type:varchar(20);not null"`
-	UserID          uint    `json:"user_id"`
+	Amount          float64   `json:"amount"`
+	Description     string    `json:"description"`
+	Category        string    `json:"category"`
+	Date            time.Time `json:"date"`
+	TransactionType string    `json:"transaction_type"`
+	UserID          uint      `json:"user_id"`
 }

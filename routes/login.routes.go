@@ -8,7 +8,7 @@ import (
 )
 
 func SignUp(c *fiber.Ctx) error {
-	var signUp models.SignUp
+	var signUp models.User
 
 	if err := c.BodyParser(&signUp); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -30,27 +30,28 @@ func SignUp(c *fiber.Ctx) error {
 }
 
 func SignIn(c *fiber.Ctx) error {
-	var signIn models.SignIn
-	var user models.SignUp
+	var input models.SignIn
+	var user models.User
 
-	if err := c.BodyParser(&signIn); err != nil {
+	if err := c.BodyParser(&input); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": "Invalid request",
 		})
 	}
-
-	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(signIn.Password)); err != nil {
+	// Buscar al usuario por email
+	if err := db.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Invalid credentials",
+			"error": "Invalid email or password",
 		})
 	}
 
-	if err := db.DB.Where("email = ? AND password = ?", signIn.Email, signIn.Password).First(&user).Error; err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(input.Password)); err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
-			"error": "Invalid credentials",
+			"error": "Invalid email or password",
 		})
 	}
+
+	user.Password = "********"
 
 	return c.JSON(user)
-
 }

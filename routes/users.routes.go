@@ -7,7 +7,7 @@ import (
 )
 
 func Users(c *fiber.Ctx) error {
-	var users []models.SignUp
+	var users []models.User
 
 	if err := db.DB.Find(&users).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -19,7 +19,7 @@ func Users(c *fiber.Ctx) error {
 }
 
 func FindUser(c *fiber.Ctx) error {
-	var user models.SignUp
+	var user models.User
 	id := c.Params("id")
 
 	if err := db.DB.First(&user, id).Error; err != nil {

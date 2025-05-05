@@ -39,3 +39,6 @@ Thumbs.db
 
 # Vendor directory (if not using `go mod vendor`)
 vendor/
+
+# Air
+tmp/
