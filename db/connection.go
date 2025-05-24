@@ -8,12 +8,14 @@ import (
 	"gorm.io/gorm"
 )
 
-var DSN = os.Getenv("DB_DSN")
 var DB *gorm.DB
 
 func Dbconnection() {
 	var error error
-	DB, error = gorm.Open(sqlite.Open("./gorm.db"), &gorm.Config{})
+
+	DSN := os.Getenv("DSN")
+
+	DB, error = gorm.Open(sqlite.Open(DSN), &gorm.Config{})
 
 	if error != nil {
 		log.Fatal(error)

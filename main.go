@@ -23,6 +23,7 @@ func main() {
 	DB_HOST := os.Getenv("DB_HOST")
 
 	db.Dbconnection()
+
 	db.DB.AutoMigrate(models.User{})
 	db.DB.AutoMigrate(models.SignIn{})
 	db.DB.AutoMigrate(models.Transaction{})
@@ -30,7 +31,10 @@ func main() {
 	app := fiber.New()
 	app.Use(cors.New(cors.ConfigDefault))
 
+	// Routes
 	app.Get("/", routes.HelloApp)
+
+	//Login route
 	app.Post("/signIn", routes.SignIn)
 	app.Post("/signUp", routes.SignUp)
 
@@ -41,6 +45,9 @@ func main() {
 	// Transactions route
 	app.Post("/transaction", routes.Transaction)
 	app.Post("/viewTransaction", routes.ViewTransaction)
+	app.Get("/viewTransactions/:user_id", routes.ViewTransactionsUserID)
+
+	// Loans routes
 
 	app.Listen(":" + DB_HOST)
 }

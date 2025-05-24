@@ -15,6 +15,8 @@ func Users(c *fiber.Ctx) error {
 		})
 	}
 
+	db.DB.Model(&users).Association("Transactions").Find(&users)
+
 	return c.JSON(users)
 }
 
@@ -25,6 +27,8 @@ func FindUser(c *fiber.Ctx) error {
 	if err := db.DB.First(&user, id).Error; err != nil {
 		return c.SendStatus(fiber.StatusNotFound)
 	}
+
+	db.DB.Model(&user).Association("Transactions").Find(&user.Transactions)
 
 	return c.JSON(user)
 }

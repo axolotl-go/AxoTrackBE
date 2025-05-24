@@ -38,7 +38,7 @@ func SignIn(c *fiber.Ctx) error {
 			"error": "Invalid request",
 		})
 	}
-	// Buscar al usuario por email
+
 	if err := db.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"error": "Invalid email or password",

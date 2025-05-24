@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/axolotl-go/axoTrackBackEnd/db"
 	"github.com/axolotl-go/axoTrackBackEnd/models"
@@ -16,6 +17,8 @@ func Transaction(c *fiber.Ctx) error {
 			"error": "Invalid request",
 		})
 	}
+
+	transaction.Date = time.Now().UTC()
 
 	if err := db.DB.Create(&transaction).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
@@ -50,4 +53,18 @@ func ViewTransaction(c *fiber.Ctx) error {
 		"date":        transaction.Date,
 	})
 
+}
+
+func ViewTransactionsUserID(c *fiber.Ctx) error {
+	var transactions []models.Transaction
+
+	id := c.Params("user_id")
+
+	if err := db.DB.Where("user_id = ?", id).Find(&transactions).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": "Failed to retrieve transactions",
+		})
+	}
+
+	return c.JSON(transactions)
 }
